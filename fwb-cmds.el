@@ -1,12 +1,12 @@
 ;;; fwb-cmds.el --- misc frame, window and buffer commands
 
-;; Copyright (C) 2008  Jonas Bernoulli
+;; Copyright (C) 2008 2009  Jonas Bernoulli
 
-;; Author: Jonas Bernoulli <jonas@bernoulli.cc>
+;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Created: 20080830
-;; Updated: 20080830
-;; Version: 0.1
-;; Homepage: http://artavatar.net
+;; Updated: 20090313
+;; Version: 0.1.1
+;; Homepage: http://github.com/tarsius/fwb-cmds
 ;; Keywords: convenience
 
 ;; This file is not part of GNU Emacs.
@@ -31,7 +31,7 @@
 ;;  is already available using the default commands.
 
 ;;  This library can be used by itself but was written as a helper
-;;  library for library `bob'.
+;;  library for library `bob.el'.
 
 ;;; Code:
 
@@ -67,8 +67,8 @@ Only buffers are considered that have a window in the current frame."
 ;; XXX very unfinished
 ;;     see kill-buffer-and-its-windows
 
-(defun delete-other-windows-on (buffer))
 ;; TODO
+;; (defun delete-other-windows-on (buffer))
 
 (defun delete-other-windows-for (buffer)
   "Delete all windows in all frames showing BUFFER."
@@ -80,42 +80,42 @@ Only buffers are considered that have a window in the current frame."
   (interactive)
   (switch-to-buffer-other-frame (current-buffer)))
 
-(defun new-frame-previous-buffer ()
-  "Create new frame with a previous buffer of current window.
+;; TODO
+;; (defun new-frame-previous-buffer ()
+;;   "Create new frame with a previous buffer of current window."
+;;   (interactive))
 
-TODO"
-  (interactive)) ;;TODO
-
-(defun new-frame-other-buffer (&optional buffer buffer-list)
-  "Create new frame and show BUFFER in it.
-
-BUFFER defaults to the buffer defined in user option `default-other-buffer',
-which defaults to `*Scratch*'.
-
-You can also cicle through various lists of possible completions.
-
-Cicle to one of these list (described below) using TODO.
-
-Then select a completion using TODO.
-
-The lists of buffers are:
-* buffers without windows,
-* recent buffers of the current window,
-* recent buffers of all windows of the current frame,
-* all buffers, or
-* all buffers with same major mode as current buffer.
-
-Which list is initially active is controlled through the user option
-`default-buffer-list', which defaults to the list of buffer without
-windows.
-
-`buffer-lists-for-command-new-frame-other-buffer' can be customized
-to add additional (or remove) lists of possible completions.
-
-Non-interactive use:
-
-BUFFER has to be passed as an argument."
-  (interactive)) ;;TODO
+;; TODO
+;; (defun new-frame-other-buffer (&optional buffer buffer-list)
+;;   "Create new frame and show BUFFER in it.
+;;
+;; BUFFER defaults to the buffer defined in user option `default-other-buffer',
+;; which defaults to `*Scratch*'.
+;;
+;; You can also cicle through various lists of possible completions.
+;;
+;; Cicle to one of these list (described below) using TODO.
+;;
+;; Then select a completion using TODO.
+;;
+;; The lists of buffers are:
+;; * buffers without windows,
+;; * recent buffers of the current window,
+;; * recent buffers of all windows of the current frame,
+;; * all buffers, or
+;; * all buffers with same major mode as current buffer.
+;;
+;; Which list is initially active is controlled through the user option
+;; `default-buffer-list', which defaults to the list of buffer without
+;; windows.
+;;
+;; `buffer-lists-for-command-new-frame-other-buffer' can be customized
+;; to add additional (or remove) lists of possible completions.
+;;
+;; Non-interactive use:
+;;
+;; BUFFER has to be passed as an argument."
+;;   (interactive))
 
 (defun new-frame-scratch-buffer ()
   "Create new frame with buffer *Scratch*."
