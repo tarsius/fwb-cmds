@@ -1,11 +1,11 @@
 ;;; fwb-cmds.el --- misc frame, window and buffer commands
 
-;; Copyright (C) 2008 2009  Jonas Bernoulli
+;; Copyright (C) 2008, 2009, 2010  Jonas Bernoulli
 
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Created: 20080830
-;; Updated: 20090313
-;; Version: 0.1.1
+;; Updated: 20100307
+;; Version: 0.1.2
 ;; Homepage: http://github.com/tarsius/fwb-cmds
 ;; Keywords: convenience
 
@@ -26,12 +26,14 @@
 
 ;;; Commentary:
 
-;;  Command defined here operate on frames, windows and buffers and
-;;  make it easier and faster to access certain functionality that
-;;  is already available using the default commands.
+;; This package is a stub, and will probably be abandoned.
 
-;;  This library can be used by itself but was written as a helper
-;;  library for library `bob.el'.
+;; Command defined here operate on frames, windows and buffers and
+;; make it easier and faster to access certain functionality that
+;; is already available using the default commands.
+
+;; This library can be used by itself but was written as a helper
+;; library for library `bob.el'.
 
 ;;; Code:
 
