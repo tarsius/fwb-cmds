@@ -1,11 +1,10 @@
 ;;; fwb-cmds.el --- misc frame, window and buffer commands
 
-;; Copyright (C) 2008, 2009, 2010  Jonas Bernoulli
+;; Copyright (C) 2008-2012  Jonas Bernoulli
 
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Created: 20080830
-;; Updated: 20100307
-;; Version: 0.1.2
+;; Version: 0.1.3
 ;; Homepage: http://github.com/tarsius/fwb-cmds
 ;; Keywords: convenience
 
@@ -30,10 +29,7 @@
 
 ;; Command defined here operate on frames, windows and buffers and
 ;; make it easier and faster to access certain functionality that
-;; is already available using the default commands.
-
-;; This library can be used by itself but was written as a helper
-;; library for library `bob.el'.
+;; is already available using the builtin commands.
 
 ;;; Code:
 
@@ -69,13 +65,13 @@ Only buffers are considered that have a window in the current frame."
 ;; XXX very unfinished
 ;;     see kill-buffer-and-its-windows
 
-;; TODO
-;; (defun delete-other-windows-on (buffer))
+;; TODO (defun delete-other-windows-on (buffer))
 
-(defun delete-other-windows-for (buffer)
-  "Delete all windows in all frames showing BUFFER."
-  (interactive (read-buffer-for-delete-windows))
-  (delete-other-windows-on buffer))
+;; TODO
+;; (defun delete-other-windows-for (buffer)
+;;   "Delete all windows in all frames showing BUFFER."
+;;   (interactive (read-buffer-for-delete-windows))
+;;   (delete-other-windows-on buffer))
 
 (defun new-frame-current-buffer ()
   "Create new frame with current buffer."
@@ -155,9 +151,9 @@ Only buffers are considered that have a window in the current frame."
 ;; TODO if frame has only one window
 ;;      create new frame with it and show last buffer in old frame
 
-(defun replace-some-window-with-frame ())
+;; TODO (defun replace-some-window-with-frame ())
 
-(defun replace-other-window-with-frame ())
+;; TODO (defun replace-other-window-with-frame ())
 
 (provide 'fwb-cmds)
 ;;; fwb-cmds.el ends here
