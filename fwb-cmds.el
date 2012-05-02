@@ -4,7 +4,7 @@
 
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Created: 20080830
-;; Version: 0.2.0
+;; Version: 0.3.0
 ;; Homepage: http://github.com/tarsius/fwb-cmds
 ;; Keywords: convenience
 
@@ -33,7 +33,8 @@
 ;;
 ;;  `delete-window' - If only one window in frame, `delete-frame'.
 
-;; Inspired by Drew Adams' `frame-cmds.el' and `misc-cmds.el'.
+;; Inspired by Drew Adams' `frame-cmds.el', `misc-cmds.el' and
+;; `find-func+.el'.
 
 ;;; Code:
 
@@ -90,6 +91,47 @@ Only buffers are considered that have a window in the current frame."
   "Create new frame with the current buffer."
   (interactive)
   (switch-to-buffer-other-frame (current-buffer)))
+
+(defun read-library-name ()
+  (require 'find-func)
+  (let* ((dirs (or find-function-source-path load-path))
+	 (suffixes (find-library-suffixes))
+	 (table (apply-partially 'locate-file-completion-table
+				 dirs suffixes))
+	 (def (if (eq (function-called-at-point) 'require)
+		  ;; `function-called-at-point' may return 'require
+		  ;; with `point' anywhere on this line.  So wrap the
+		  ;; `save-excursion' below in a `condition-case' to
+		  ;; avoid reporting a scan-error here.
+		  (condition-case nil
+		      (save-excursion
+			(backward-up-list)
+			(forward-char)
+			(forward-sexp 2)
+			(thing-at-point 'symbol))
+		    (error nil))
+		(thing-at-point 'symbol))))
+    (when (and def (not (test-completion def table)))
+      (setq def nil))
+    (completing-read (if def (format "Library name (default %s): " def)
+		       "Library name: ")
+		     table nil nil nil nil def)))
+
+;;;###autoload
+(defun find-library-other-window (library)
+  "Find the Emacs-Lisp source of LIBRARY in another window."
+  (interactive (list (read-library-name)))
+  (let ((buf (find-file-noselect (find-library-name library))))
+    (pop-to-buffer buf 'other-window)))
+
+;;;###autoload
+(defun find-library-other-frame (library)
+  "Find the Emacs-Lisp source of LIBRARY in another frame."
+  (interactive (list (read-library-name)))
+  (let ((buf (find-file-noselect (find-library-name library))))
+    (condition-case nil
+	(switch-to-buffer-other-frame buf)
+      (error (pop-to-buffer buf)))))
 
 (provide 'fwb-cmds)
 ;;; fwb-cmds.el ends here
