@@ -4,7 +4,7 @@
 
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Created: 20080830
-;; Version: 0.1.3
+;; Version: 0.2.0
 ;; Homepage: http://github.com/tarsius/fwb-cmds
 ;; Keywords: convenience
 
@@ -25,135 +25,71 @@
 
 ;;; Commentary:
 
-;; This package is a stub, and will probably be abandoned.
-
-;; Command defined here operate on frames, windows and buffers and
+;; Commands defined here operate on frames, windows and buffers and
 ;; make it easier and faster to access certain functionality that
 ;; is already available using the builtin commands.
 
+;;  ***** NOTE: The following EMACS PRIMITIVES have been REDEFINED HERE:
+;;
+;;  `delete-window' - If only one window in frame, `delete-frame'.
+
+;; Inspired by Drew Adams' `frame-cmds.el' and `misc-cmds.el'.
+
 ;;; Code:
 
-(require 'frame-cmds)
-(require 'misc-cmds)
+(or (fboundp 'old-delete-window)
+    (fset 'old-delete-window (symbol-function 'delete-window)))
 
-(defun kill-this-buffer-and-its-windows (&optional only-current-p)
-  "Kill current buffer and delete its windows."
+;; REPLACES ORIGINAL (built-in):
+;; If WINDOW is the only one in its frame, `delete-frame'.
+;;;###autoload
+(defun delete-window (&optional window)
+  "Remove WINDOW from the display.  Default is `selected-window'.
+If WINDOW is the only one in its frame, then `delete-frame' too."
   (interactive)
-  (kill-buffer-and-its-windows (current-buffer)))
-;; TODO should optionally only delete current window
-;;      interactively this should be controlled by a external variable
+  (save-current-buffer
+    (if window
+	(select-window window)
+      (setq window (selected-window)))
+    (if (one-window-p t)
+	(delete-frame)
+      (old-delete-window (selected-window)))))
 
-(defun kill-other-buffers-in-frame-and-their-windows ()
-  "Kill all buffers showing in the current frame \
-but the current and their window.
+;;;###autoload
+(defun kill-this-buffer-and-its-window ()
+  "Kill the current buffer and delete its window.
+When called in the minibuffer, get out of the minibuffer
+using `abort-recursive-edit'."
+  (interactive)
+  (if (menu-bar-non-minibuffer-window-p)
+      (let ((buffer (current-buffer)))
+	(delete-window (selected-window))
+	(kill-buffer buffer))
+    (abort-recursive-edit)))
+
+;;;###autoload
+(defun kill-other-buffers-and-their-window ()
+  "Kill non-current buffers in the selected frame and delete their window.
 Only buffers are considered that have a window in the current frame."
-(interactive)
-(dolist (win (window-list nil "not"))
-  (unless (equal win (selected-window))
-    (kill-buffer (window-buffer win))
-    (old-delete-window win))))
-;; XXX very unfinished
-;;     see kill-buffer-and-its-windows
-
-(defun kill-other-buffers-in-frame()
-  "Kill all buffers but the current.  Windows are preserved.
-Only buffers are considered that have a window in the current frame."
-(interactive)
-(dolist (win (window-list nil "not"))
-  (unless (equal win (selected-window))
-    (kill-buffer (window-buffer win)))))
-;; XXX very unfinished
-;;     see kill-buffer-and-its-windows
-
-;; TODO (defun delete-other-windows-on (buffer))
-
-;; TODO
-;; (defun delete-other-windows-for (buffer)
-;;   "Delete all windows in all frames showing BUFFER."
-;;   (interactive (read-buffer-for-delete-windows))
-;;   (delete-other-windows-on buffer))
-
-(defun new-frame-current-buffer ()
-  "Create new frame with current buffer."
   (interactive)
-  (switch-to-buffer-other-frame (current-buffer)))
+  (dolist (window (window-list nil :exclude-minibuffer))
+    (unless (equal window (selected-window))
+      (kill-buffer (window-buffer window))
+      (old-delete-window window))))
 
-;; TODO
-;; (defun new-frame-previous-buffer ()
-;;   "Create new frame with a previous buffer of current window."
-;;   (interactive))
-
-;; TODO
-;; (defun new-frame-other-buffer (&optional buffer buffer-list)
-;;   "Create new frame and show BUFFER in it.
-;;
-;; BUFFER defaults to the buffer defined in user option `default-other-buffer',
-;; which defaults to `*Scratch*'.
-;;
-;; You can also cicle through various lists of possible completions.
-;;
-;; Cicle to one of these list (described below) using TODO.
-;;
-;; Then select a completion using TODO.
-;;
-;; The lists of buffers are:
-;; * buffers without windows,
-;; * recent buffers of the current window,
-;; * recent buffers of all windows of the current frame,
-;; * all buffers, or
-;; * all buffers with same major mode as current buffer.
-;;
-;; Which list is initially active is controlled through the user option
-;; `default-buffer-list', which defaults to the list of buffer without
-;; windows.
-;;
-;; `buffer-lists-for-command-new-frame-other-buffer' can be customized
-;; to add additional (or remove) lists of possible completions.
-;;
-;; Non-interactive use:
-;;
-;; BUFFER has to be passed as an argument."
-;;   (interactive))
-
-(defun new-frame-scratch-buffer ()
-  "Create new frame with buffer *Scratch*."
-  (interactive)
-  (switch-to-buffer-other-frame "*Scratch*"))
-
-;; XXX This gives the same result as split-window-vertically
-;;     However split-window-horizontally doesnt make sence with wmii;
-;;     so i favor this name.  Other new commands in this category
-;;     could be:
-;;     * new-window-previous-buffer
-;;     If this isnt done the new-window-current-buffer should only
-;;     be an alias for split-window-vertically
-(defun new-window-current-buffer ()
-  "Create new window with current buffer."
-  (interactive)
-  (switch-to-buffer-other-window "*Scratch*"))
-
-(defun new-window-scratch-buffer ()
-  "Create new window with buffer *Scratch*."
-  (interactive)
-  (switch-to-buffer-other-window "*Scratch*"))
-
-(defun delete-some-frame ()
-  "Delete some frame."
-  (interactive)
-  (delete-frame (get-a-frame (read-frame "Frame to make invisible: "))))
-
+;;;###autoload
 (defun replace-current-window-with-frame ()
   "Delete window but show buffer in a newly created frame."
   (interactive)
-  (let ((buffer (current-buffer)))
-    (delete-window)
-    (switch-to-buffer-other-frame buffer)))
-;; TODO if frame has only one window
-;;      create new frame with it and show last buffer in old frame
+  (let ((window (selected-window)))
+    (switch-to-buffer-other-frame (current-buffer))
+    (old-delete-window window)))
 
-;; TODO (defun replace-some-window-with-frame ())
-
-;; TODO (defun replace-other-window-with-frame ())
+;;;###autoload
+(defun switch-to-current-buffer-other-frame ()
+  "Create new frame with the current buffer."
+  (interactive)
+  (switch-to-buffer-other-frame (current-buffer)))
 
 (provide 'fwb-cmds)
 ;;; fwb-cmds.el ends here
