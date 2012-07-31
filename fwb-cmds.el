@@ -4,7 +4,7 @@
 
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Created: 20080830
-;; Version: 0.3.0
+;; Version: 0.3.1
 ;; Homepage: http://github.com/tarsius/fwb-cmds
 ;; Keywords: convenience
 
@@ -50,10 +50,10 @@ If WINDOW is the only one in its frame, then `delete-frame' too."
   (interactive)
   (save-current-buffer
     (if window
-	(select-window window)
+        (select-window window)
       (setq window (selected-window)))
     (if (one-window-p t)
-	(delete-frame)
+        (delete-frame)
       (old-delete-window (selected-window)))))
 
 ;;;###autoload
@@ -64,8 +64,8 @@ using `abort-recursive-edit'."
   (interactive)
   (if (menu-bar-non-minibuffer-window-p)
       (let ((buffer (current-buffer)))
-	(delete-window (selected-window))
-	(kill-buffer buffer))
+        (delete-window (selected-window))
+        (kill-buffer buffer))
     (abort-recursive-edit)))
 
 ;;;###autoload
@@ -95,27 +95,27 @@ Only buffers are considered that have a window in the current frame."
 (defun read-library-name ()
   (require 'find-func)
   (let* ((dirs (or find-function-source-path load-path))
-	 (suffixes (find-library-suffixes))
-	 (table (apply-partially 'locate-file-completion-table
-				 dirs suffixes))
-	 (def (if (eq (function-called-at-point) 'require)
-		  ;; `function-called-at-point' may return 'require
-		  ;; with `point' anywhere on this line.  So wrap the
-		  ;; `save-excursion' below in a `condition-case' to
-		  ;; avoid reporting a scan-error here.
-		  (condition-case nil
-		      (save-excursion
-			(backward-up-list)
-			(forward-char)
-			(forward-sexp 2)
-			(thing-at-point 'symbol))
-		    (error nil))
-		(thing-at-point 'symbol))))
+         (suffixes (find-library-suffixes))
+         (table (apply-partially 'locate-file-completion-table
+                                 dirs suffixes))
+         (def (if (eq (function-called-at-point) 'require)
+                  ;; `function-called-at-point' may return 'require
+                  ;; with `point' anywhere on this line.  So wrap the
+                  ;; `save-excursion' below in a `condition-case' to
+                  ;; avoid reporting a scan-error here.
+                  (condition-case nil
+                      (save-excursion
+                        (backward-up-list)
+                        (forward-char)
+                        (forward-sexp 2)
+                        (thing-at-point 'symbol))
+                    (error nil))
+                (thing-at-point 'symbol))))
     (when (and def (not (test-completion def table)))
       (setq def nil))
     (completing-read (if def (format "Library name (default %s): " def)
-		       "Library name: ")
-		     table nil nil nil nil def)))
+                       "Library name: ")
+                     table nil nil nil nil def)))
 
 ;;;###autoload
 (defun find-library-other-window (library)
@@ -130,8 +130,11 @@ Only buffers are considered that have a window in the current frame."
   (interactive (list (read-library-name)))
   (let ((buf (find-file-noselect (find-library-name library))))
     (condition-case nil
-	(switch-to-buffer-other-frame buf)
+        (switch-to-buffer-other-frame buf)
       (error (pop-to-buffer buf)))))
 
 (provide 'fwb-cmds)
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:
 ;;; fwb-cmds.el ends here
