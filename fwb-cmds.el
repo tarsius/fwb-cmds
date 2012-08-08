@@ -4,7 +4,7 @@
 
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Created: 20080830
-;; Version: 0.3.1
+;; Version: 0.3.2
 ;; Homepage: http://github.com/tarsius/fwb-cmds
 ;; Keywords: convenience
 
@@ -38,6 +38,8 @@
 
 ;;; Code:
 
+(require 'find-func)
+
 (or (fboundp 'old-delete-window)
     (fset 'old-delete-window (symbol-function 'delete-window)))
 
@@ -54,7 +56,8 @@ If WINDOW is the only one in its frame, then `delete-frame' too."
       (setq window (selected-window)))
     (if (one-window-p t)
         (delete-frame)
-      (old-delete-window (selected-window)))))
+      (with-no-warnings
+        (old-delete-window (selected-window))))))
 
 ;;;###autoload
 (defun kill-this-buffer-and-its-window ()
@@ -76,7 +79,8 @@ Only buffers are considered that have a window in the current frame."
   (dolist (window (window-list nil :exclude-minibuffer))
     (unless (equal window (selected-window))
       (kill-buffer (window-buffer window))
-      (old-delete-window window))))
+      (with-no-warnings
+        (old-delete-window window)))))
 
 ;;;###autoload
 (defun replace-current-window-with-frame ()
@@ -84,7 +88,8 @@ Only buffers are considered that have a window in the current frame."
   (interactive)
   (let ((window (selected-window)))
     (switch-to-buffer-other-frame (current-buffer))
-    (old-delete-window window)))
+    (with-no-warnings
+      (old-delete-window window))))
 
 ;;;###autoload
 (defun switch-to-current-buffer-other-frame ()
