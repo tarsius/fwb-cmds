@@ -141,6 +141,21 @@ Only buffers are considered that have a window in the current frame."
         (switch-to-buffer-other-frame buf)
       (error (pop-to-buffer buf)))))
 
+;;;###autoload
+(defun sudo-find-file (&optional arg)
+  (interactive "P")
+  (require 'tramp)
+  (if (or arg
+          (not buffer-file-name)
+          (file-writable-p buffer-file-name))
+      (let ((default-directory
+              (concat "/sudo:root@localhost:" default-directory)))
+        (apply 'find-file
+               (find-file-read-args
+                "Find file: "
+                (confirm-nonexistent-file-or-buffer))))
+    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
 (provide 'fwb-cmds)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
