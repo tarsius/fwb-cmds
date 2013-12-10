@@ -4,7 +4,6 @@
 
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Created: 20080830
-;; Version: 0.3.2
 ;; Homepage: http://github.com/tarsius/fwb-cmds
 ;; Keywords: convenience
 
