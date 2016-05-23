@@ -1,10 +1,10 @@
 ;;; fwb-cmds.el --- misc frame, window and buffer commands
 
-;; Copyright (C) 2008-2012  Jonas Bernoulli
+;; Copyright (C) 2008-2016  Jonas Bernoulli
 
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Created: 20080830
-;; Homepage: http://github.com/tarsius/fwb-cmds
+;; Homepage: https://github.com/tarsius/fwb-cmds
 ;; Keywords: convenience
 
 ;; This file is not part of GNU Emacs.
