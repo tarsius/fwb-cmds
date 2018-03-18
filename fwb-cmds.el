@@ -1,4 +1,4 @@
-;;; fwb-cmds.el --- misc frame, window and buffer commands
+;;; fwb-cmds.el --- misc frame, window and buffer commands  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2008-2018  Jonas Bernoulli
 
