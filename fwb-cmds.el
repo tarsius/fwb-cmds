@@ -130,6 +130,9 @@ Only buffers are considered that have a window in the current frame."
 
 ;;;###autoload
 (defun sudo-find-file (&optional arg)
+  "Edit the visited file as \"root\".
+If the current buffer does not visit a file, the visited file is
+writable or with a prefix argument, then read a file to visit."
   (interactive "P")
   (require 'tramp)
   (if (or arg
