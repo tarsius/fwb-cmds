@@ -53,9 +53,8 @@
 If WINDOW is the only one in its frame, then `delete-frame' too."
   (interactive)
   (save-current-buffer
-    (if window
-        (select-window window)
-      (setq window (selected-window)))
+    (when window
+      (select-window window))
     (if (one-window-p t)
         (delete-frame)
       (with-no-warnings
