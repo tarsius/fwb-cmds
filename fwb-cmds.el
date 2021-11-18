@@ -93,6 +93,18 @@ Only buffers are considered that have a window in the current frame."
       (old-delete-window window))))
 
 ;;;###autoload
+(defun replace-some-window-with-frame ()
+  "Delete some window but show buffer in a newly created frame.
+Replace the first window that never displayed another buffer than
+the one it is currently displaying.  If all windows displayed
+another buffer before, then replace the selected window."
+  (interactive)
+  (if-let ((window (cl-find-if-not #'window-prev-buffers (window-list))))
+      (with-selected-window window
+        (replace-current-window-with-frame))
+    (replace-current-window-with-frame)))
+
+;;;###autoload
 (defun switch-to-current-buffer-other-frame ()
   "Create new frame with the current buffer."
   (interactive)
