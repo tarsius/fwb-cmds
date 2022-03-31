@@ -150,7 +150,7 @@ writable or with a prefix argument, then read a file to visit."
           (not buffer-file-name)
           (file-writable-p buffer-file-name))
       (let ((default-directory
-              (concat "/sudo:root@localhost:" default-directory)))
+             (concat "/sudo:root@localhost:" default-directory)))
         (apply 'find-file
                (find-file-read-args
                 "Find file: "
