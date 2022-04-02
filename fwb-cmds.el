@@ -40,6 +40,7 @@
 
 ;;; Code:
 
+(require 'cl-lib)
 (require 'find-func)
 
 (or (fboundp 'old-delete-window)
