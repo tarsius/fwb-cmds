@@ -128,8 +128,8 @@ another buffer before, then replace the selected window."
              (splitter
               (if (= (car this-win-edges)
                      (car (window-edges (next-window))))
-                  'split-window-horizontally
-                'split-window-vertically)))
+                  #'split-window-horizontally
+                #'split-window-vertically)))
         (delete-other-windows)
         (let ((first-win (selected-window)))
           (funcall splitter)
@@ -151,7 +151,7 @@ writable or with a prefix argument, then read a file to visit."
           (file-writable-p buffer-file-name))
       (let ((default-directory
              (concat "/sudo:root@localhost:" default-directory)))
-        (apply 'find-file
+        (apply #'find-file
                (find-file-read-args
                 "Find file: "
                 (confirm-nonexistent-file-or-buffer))))
