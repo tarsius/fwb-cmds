@@ -5,6 +5,7 @@
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Homepage: https://github.com/tarsius/fwb-cmds
 ;; Keywords: convenience
+;; Package-Requires: ((emacs "25.1") (compat "28.1.1.0"))
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;; This file is not part of GNU Emacs.
@@ -41,6 +42,7 @@
 ;;; Code:
 
 (require 'cl-lib)
+(require 'compat)
 (require 'find-func)
 
 (or (fboundp 'old-delete-window)
