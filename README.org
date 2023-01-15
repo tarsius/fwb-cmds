@@ -3,3 +3,8 @@
 Commands defined here operate on frames, windows and buffers and
 make it easier and faster to access certain functionality that
 is already available using the builtin commands.
+
+#+html: <br><br>
+#+html: <a href="https://github.com/tarsius/fwb-cmds/actions/workflows/compile.yml"><img alt="Compile" src="https://github.com/tarsius/fwb-cmds/actions/workflows/compile.yml/badge.svg"/></a>
+#+html: <a href="https://stable.melpa.org/#/fwb-cmds"><img alt="MELPA Stable" src="https://stable.melpa.org/packages/fwb-cmds-badge.svg"/></a>
+#+html: <a href="https://melpa.org/#/fwb-cmds"><img alt="MELPA" src="https://melpa.org/packages/fwb-cmds-badge.svg"/></a>
