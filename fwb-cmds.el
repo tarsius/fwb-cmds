@@ -29,23 +29,14 @@
 ;; make it easier and faster to access certain functionality that
 ;; is already available using the builtin commands.
 
-;;  ***** NOTE: The following EMACS PRIMITIVES have been REDEFINED HERE:
-;;  `delete-window' If there is only one window in frame, then
-;;                  delete whole frame using `delete-frame'.
-;;
 ;;; Code:
 
 (require 'cl-lib)
 (require 'compat)
 (require 'find-func)
 
-(or (fboundp 'old-delete-window)
-    (fset 'old-delete-window (symbol-function 'delete-window)))
-
-;; REPLACES ORIGINAL (built-in):
-;; If WINDOW is the only one in its frame, `delete-frame'.
 ;;;###autoload
-(defun delete-window (&optional window)
+(defun fwb-delete-window (&optional window)
   "Remove WINDOW from the display.  Default is `selected-window'.
 If WINDOW is the only one in its frame, then `delete-frame' too."
   (interactive)
@@ -54,8 +45,18 @@ If WINDOW is the only one in its frame, then `delete-frame' too."
       (select-window window))
     (if (one-window-p t)
         (delete-frame)
-      (with-no-warnings
-        (old-delete-window (selected-window))))))
+      (delete-window (selected-window)))))
+
+(defun fwb--delete-window-or-frame (fn &optional window)
+  "If WINDOW is the only one in its frame, then `delete-frame' too.
+This is an around advice for `delete-window'."
+  (interactive)
+  (save-current-buffer
+    (when window
+      (select-window window))
+    (if (one-window-p t)
+        (delete-frame)
+      (funcall fn (selected-window)))))
 
 ;;;###autoload
 (defun fwb-kill-this-buffer-and-its-window ()
@@ -78,7 +79,7 @@ Only buffers are considered that have a window in the current frame."
     (unless (equal window (selected-window))
       (kill-buffer (window-buffer window))
       (with-no-warnings
-        (old-delete-window window)))))
+        (delete-window window)))))
 
 ;;;###autoload
 (defun fwb-replace-current-window-with-frame ()
@@ -87,7 +88,7 @@ Only buffers are considered that have a window in the current frame."
   (let ((window (selected-window)))
     (switch-to-buffer-other-frame (current-buffer))
     (with-no-warnings
-      (old-delete-window window))))
+      (delete-window window))))
 
 ;;;###autoload
 (defun fwb-replace-some-window-with-frame ()
