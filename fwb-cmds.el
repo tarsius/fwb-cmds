@@ -33,12 +33,6 @@
 ;;  `delete-window' If there is only one window in frame, then
 ;;                  delete whole frame using `delete-frame'.
 ;;
-;;  ***** NOTE: The symbols defined here do not have a proper package
-;;              prefix.
-
-;; Inspired by Drew Adams' `frame-cmds.el', `misc-cmds.el' and
-;; `find-func+.el'.
-
 ;;; Code:
 
 (require 'cl-lib)
@@ -64,19 +58,19 @@ If WINDOW is the only one in its frame, then `delete-frame' too."
         (old-delete-window (selected-window))))))
 
 ;;;###autoload
-(defun kill-this-buffer-and-its-window ()
+(defun fwb-kill-this-buffer-and-its-window ()
   "Kill the current buffer and delete its window.
 When called in the minibuffer, get out of the minibuffer
 using `abort-recursive-edit'."
   (interactive)
   (if (menu-bar-non-minibuffer-window-p)
       (let ((buffer (current-buffer)))
-        (delete-window (selected-window))
+        (fwb-delete-window (selected-window))
         (kill-buffer buffer))
     (abort-recursive-edit)))
 
 ;;;###autoload
-(defun kill-other-buffers-and-their-window ()
+(defun fwb-kill-other-buffers-and-their-window ()
   "Kill non-current buffers in the selected frame and delete their window.
 Only buffers are considered that have a window in the current frame."
   (interactive)
@@ -87,7 +81,7 @@ Only buffers are considered that have a window in the current frame."
         (old-delete-window window)))))
 
 ;;;###autoload
-(defun replace-current-window-with-frame ()
+(defun fwb-replace-current-window-with-frame ()
   "Delete window but show buffer in a newly created frame."
   (interactive)
   (let ((window (selected-window)))
@@ -96,7 +90,7 @@ Only buffers are considered that have a window in the current frame."
       (old-delete-window window))))
 
 ;;;###autoload
-(defun replace-some-window-with-frame ()
+(defun fwb-replace-some-window-with-frame ()
   "Delete some window but show buffer in a newly created frame.
 Replace the first window that never displayed another buffer than
 the one it is currently displaying.  If all windows displayed
@@ -104,17 +98,17 @@ another buffer before, then replace the selected window."
   (interactive)
   (if-let ((window (cl-find-if-not #'window-prev-buffers (window-list))))
       (with-selected-window window
-        (replace-current-window-with-frame))
-    (replace-current-window-with-frame)))
+        (fwb-replace-current-window-with-frame))
+    (fwb-replace-current-window-with-frame)))
 
 ;;;###autoload
-(defun switch-to-current-buffer-other-frame ()
+(defun fwb-switch-to-current-buffer-other-frame ()
   "Create new frame with the current buffer."
   (interactive)
   (switch-to-buffer-other-frame (current-buffer)))
 
 ;;;###autoload
-(defun toggle-window-split ()
+(defun fwb-toggle-window-split ()
   "Toggle between vertical and horizontal split."
   ;; Source: https://www.emacswiki.org/emacs/ToggleWindowSplit.
   ;; Author: Jeff Dwork
@@ -143,7 +137,7 @@ another buffer before, then replace the selected window."
           (if this-win-2nd (other-window 1))))))
 
 ;;;###autoload
-(defun sudo-find-file (&optional arg)
+(defun fwb-sudo-find-file (&optional arg)
   "Edit the visited file as \"root\".
 If the current buffer does not visit a file, the visited file is
 writable or with a prefix argument, then read a file to visit."
