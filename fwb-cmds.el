@@ -1,6 +1,6 @@
 ;;; fwb-cmds.el --- misc frame, window and buffer commands  -*- lexical-binding:t -*-
 
-;; Copyright (C) 2008-2024 Jonas Bernoulli
+;; Copyright (C) 2008-2025 Jonas Bernoulli
 
 ;; Author: Jonas Bernoulli <emacs.fwb-cmds@jonas.bernoulli.dev>
 ;; Homepage: https://github.com/tarsius/fwb-cmds
