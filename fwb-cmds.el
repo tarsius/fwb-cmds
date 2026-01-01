@@ -162,5 +162,6 @@ writable or with a prefix argument, then read a file to visit."
 (provide 'fwb-cmds)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
+;; lisp-indent-local-overrides: ((cond . 0) (interactive . 0))
 ;; End:
 ;;; fwb-cmds.el ends here
